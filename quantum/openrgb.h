@@ -18,7 +18,7 @@
 
 // This is changed only when the command IDs change,
 // so OpenRGB can detect compatible firmware.
-#define OPENRGB_PROTOCOL_VERSION 0xD
+#define OPENRGB_PROTOCOL_VERSION 0xE
 
 #define RAW_EPSIZE 64
 
@@ -41,7 +41,7 @@ enum openrgb_responses {
     OPENRGB_END_OF_MESSAGE = 100,
 };
 
-extern RGB g_openrgb_direct_mode_colors[DRIVER_LED_TOTAL];
+extern RGB g_openrgb_direct_mode_colors[RGB_MATRIX_LED_COUNT];
 
 void openrgb_get_protocol_version(void);
 void openrgb_get_qmk_version(void);

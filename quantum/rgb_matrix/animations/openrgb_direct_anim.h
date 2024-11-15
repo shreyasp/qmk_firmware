@@ -4,7 +4,7 @@ RGB_MATRIX_EFFECT(OPENRGB_DIRECT)
 
 bool OPENRGB_DIRECT(effect_params_t* params) {
     RGB_MATRIX_USE_LIMITS(led_min, led_max);
-
+    #ifndef OPENRGB_DIRECT_MODE_UNBUFFERED
     for (uint8_t i = led_min; i < led_max; i++) {
         #ifdef OPENRGB_DIRECT_MODE_USE_UNIVERSAL_BRIGHTNESS
         float brightness = (float)rgb_matrix_config.hsv.v / UINT8_MAX;
@@ -23,7 +23,8 @@ bool OPENRGB_DIRECT(effect_params_t* params) {
         );
         #endif
     }
-    return led_max < DRIVER_LED_TOTAL;
+    #endif
+    return led_max < RGB_MATRIX_LED_COUNT;
 }
 #    endif
 #endif

@@ -19,10 +19,12 @@
 #endif
 
 #include "version.h"
-#include "quantum.h"
+#include "rgb_matrix.h"
+#include "util.h"
 #include "openrgb.h"
 #include "raw_hid.h"
 #include "string.h"
+#include "keymap_introspection.h"
 #include <color.h>
 
 #if !defined(OPENRGB_DIRECT_MODE_STARTUP_RED)
@@ -37,134 +39,151 @@
 #    define OPENRGB_DIRECT_MODE_STARTUP_BLUE 255
 #endif
 
-RGB                  g_openrgb_direct_mode_colors[DRIVER_LED_TOTAL] = {[0 ... DRIVER_LED_TOTAL - 1] = {OPENRGB_DIRECT_MODE_STARTUP_GREEN, OPENRGB_DIRECT_MODE_STARTUP_RED, OPENRGB_DIRECT_MODE_STARTUP_BLUE}};
-static const uint8_t openrgb_rgb_matrix_effects_indexes[]           = {
-    1,  2,
+#ifndef OPENRGB_DIRECT_MODE_UNBUFFERED
+RGB g_openrgb_direct_mode_colors[RGB_MATRIX_LED_COUNT] = {[0 ... RGB_MATRIX_LED_COUNT - 1] = {OPENRGB_DIRECT_MODE_STARTUP_GREEN, OPENRGB_DIRECT_MODE_STARTUP_RED, OPENRGB_DIRECT_MODE_STARTUP_BLUE}};
+#endif
 
-#ifndef DISABLE_RGB_MATRIX_ALPHAS_MODS
+static const uint8_t openrgb_rgb_matrix_effects_indexes[]           = {
+    1, // OPENRGB
+    2, // SOLID COLOR
+
+#ifdef ENABLE_RGB_MATRIX_ALPHAS_MODS
     3,
 #endif
-#ifndef DISABLE_RGB_MATRIX_GRADIENT_UP_DOWN
+#ifdef ENABLE_RGB_MATRIX_GRADIENT_UP_DOWN
     4,
 #endif
-#ifndef DISABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT
+#ifdef ENABLE_RGB_MATRIX_GRADIENT_LEFT_RIGHT
     5,
 #endif
-#ifndef DISABLE_RGB_MATRIX_BREATHING
+#ifdef ENABLE_RGB_MATRIX_BREATHING
     6,
 #endif
-#ifndef DISABLE_RGB_MATRIX_BAND_SAT
+#ifdef ENABLE_RGB_MATRIX_BAND_SAT
     7,
 #endif
-#ifndef DISABLE_RGB_MATRIX_BAND_VAL
+#ifdef ENABLE_RGB_MATRIX_BAND_VAL
     8,
 #endif
-#ifndef DISABLE_RGB_MATRIX_BAND_PINWHEEL_SAT
+#ifdef ENABLE_RGB_MATRIX_BAND_PINWHEEL_SAT
     9,
 #endif
-#ifndef DISABLE_RGB_MATRIX_BAND_PINWHEEL_VAL
+#ifdef ENABLE_RGB_MATRIX_BAND_PINWHEEL_VAL
     10,
 #endif
-#ifndef DISABLE_RGB_MATRIX_BAND_SPIRAL_SAT
+#ifdef ENABLE_RGB_MATRIX_BAND_SPIRAL_SAT
     11,
 #endif
-#ifndef DISABLE_RGB_MATRIX_BAND_SPIRAL_VAL
+#ifdef ENABLE_RGB_MATRIX_BAND_SPIRAL_VAL
     12,
 #endif
-#ifndef DISABLE_RGB_MATRIX_CYCLE_ALL
+#ifdef ENABLE_RGB_MATRIX_CYCLE_ALL
     13,
 #endif
-#ifndef DISABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT
+#ifdef ENABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT
     14,
 #endif
-#ifndef DISABLE_RGB_MATRIX_CYCLE_UP_DOWN
+#ifdef ENABLE_RGB_MATRIX_CYCLE_UP_DOWN
     15,
 #endif
-#ifndef DISABLE_RGB_MATRIX_CYCLE_OUT_IN
+#ifdef ENABLE_RGB_MATRIX_CYCLE_OUT_IN
     16,
 #endif
-#ifndef DISABLE_RGB_MATRIX_CYCLE_OUT_IN_DUAL
+#ifdef ENABLE_RGB_MATRIX_CYCLE_OUT_IN_DUAL
     17,
 #endif
-#ifndef DISABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
+#ifdef ENABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
     18,
 #endif
-#ifndef DISABLE_RGB_MATRIX_CYCLE_PINWHEEL
+#ifdef ENABLE_RGB_MATRIX_CYCLE_PINWHEEL
     19,
 #endif
-#ifndef DISABLE_RGB_MATRIX_CYCLE_SPIRAL
+#ifdef ENABLE_RGB_MATRIX_CYCLE_SPIRAL
     20,
 #endif
-#ifndef DISABLE_RGB_MATRIX_DUAL_BEACON
+#ifdef ENABLE_RGB_MATRIX_DUAL_BEACON
     21,
 #endif
-#ifndef DISABLE_RGB_MATRIX_RAINBOW_BEACON
+#ifdef ENABLE_RGB_MATRIX_RAINBOW_BEACON
     22,
 #endif
-#ifndef DISABLE_RGB_MATRIX_RAINBOW_PINWHEELS
+#ifdef ENABLE_RGB_MATRIX_RAINBOW_PINWHEELS
     23,
 #endif
-#ifndef DISABLE_RGB_MATRIX_RAINDROPS
+#ifdef ENABLE_RGB_MATRIX_RAINDROPS
     24,
 #endif
-#ifndef DISABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS
+#ifdef ENABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS
     25,
 #endif
-#ifndef DISABLE_RGB_MATRIX_HUE_BREATHING
+#ifdef ENABLE_RGB_MATRIX_HUE_BREATHING
     26,
 #endif
-#ifndef DISABLE_RGB_MATRIX_HUE_PENDULUM
+#ifdef ENABLE_RGB_MATRIX_HUE_PENDULUM
     27,
 #endif
-#ifndef DISABLE_RGB_MATRIX_HUE_WAVE
+#ifdef ENABLE_RGB_MATRIX_HUE_WAVE
     28,
 #endif
-#if defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && !defined(DISABLE_RGB_MATRIX_TYPING_HEATMAP)
+#if defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && defined(ENABLE_RGB_MATRIX_TYPING_HEATMAP)
     29,
 #endif
-#if defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && !defined(DISABLE_RGB_MATRIX_DIGITAL_RAIN)
+#if defined(RGB_MATRIX_FRAMEBUFFER_EFFECTS) && defined(ENABLE_RGB_MATRIX_DIGITAL_RAIN)
     30,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE
     31,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SOLID_REACTIVE
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SOLID_REACTIVE
     32,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SOLID_REACTIVE_WIDE
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SOLID_REACTIVE_WIDE
     33,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE
     34,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SOLID_REACTIVE_CROSS
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SOLID_REACTIVE_CROSS
     35,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTICROSS
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SOLID_REACTIVE_MULTICROSS
     36,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SOLID_REACTIVE_NEXUS
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SOLID_REACTIVE_NEXUS
     37,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SOLID_REACTIVE_MULTINEXUS
     38,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SPLASH
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SPLASH
     39,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_MULTISPLASH
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_MULTISPLASH
     40,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SOLID_SPLASH
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SOLID_SPLASH
     41,
 #endif
-#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && !defined DISABLE_RGB_MATRIX_SOLID_MULTISPLASH
+#if defined RGB_MATRIX_KEYREACTIVE_ENABLED && defined ENABLE_RGB_MATRIX_SOLID_MULTISPLASH
     42,
+#endif
+#ifdef ENABLE_RGB_MATRIX_PIXEL_RAIN
+    43,
+#endif
+#ifdef ENABLE_RGB_MATRIX_PIXEL_FLOW
+    44,
+#endif
+#ifdef ENABLE_RGB_MATRIX_PIXEL_FRACTAL
+    45,
 #endif
 };
 static uint8_t raw_hid_buffer[RAW_EPSIZE];
-
+#ifdef VIA_OPENRGB_HYBRID
+void orgb_raw_hid_receive(uint8_t *data, uint8_t length) {
+#endif
+#ifndef VIA_OPENRGB_HYBRID
 void raw_hid_receive(uint8_t *data, uint8_t length) {
+#endif
     switch (*data) {
         case OPENRGB_GET_PROTOCOL_VERSION:
             openrgb_get_protocol_version();
@@ -217,7 +236,7 @@ void openrgb_get_qmk_version(void) {
 }
 void openrgb_get_device_info(void) {
     raw_hid_buffer[0] = OPENRGB_GET_DEVICE_INFO;
-    raw_hid_buffer[1] = DRIVER_LED_TOTAL;
+    raw_hid_buffer[1] = RGB_MATRIX_LED_COUNT;
     raw_hid_buffer[2] = MATRIX_COLS * MATRIX_ROWS;
 
 #define MASSDROP_VID 0x04D8
@@ -262,15 +281,22 @@ void openrgb_get_led_info(uint8_t *data) {
         const uint8_t led_idx = first_led + i;
         const uint8_t data_idx  = i * 7;
 
-        if (led_idx >= DRIVER_LED_TOTAL) {
+        if (led_idx >= RGB_MATRIX_LED_COUNT) {
             raw_hid_buffer[data_idx + 3] = OPENRGB_FAILURE;
         } else {
             raw_hid_buffer[data_idx + 1] = g_led_config.point[led_idx].x;
             raw_hid_buffer[data_idx + 2] = g_led_config.point[led_idx].y;
             raw_hid_buffer[data_idx + 3] = g_led_config.flags[led_idx];
-            raw_hid_buffer[data_idx + 4] = g_openrgb_direct_mode_colors[led_idx].r;
-            raw_hid_buffer[data_idx + 5] = g_openrgb_direct_mode_colors[led_idx].g;
-            raw_hid_buffer[data_idx + 6] = g_openrgb_direct_mode_colors[led_idx].b;
+
+            #ifdef OPENRGB_DIRECT_MODE_UNBUFFERED
+                raw_hid_buffer[data_idx + 4] = 0;
+                raw_hid_buffer[data_idx + 5] = 0;
+                raw_hid_buffer[data_idx + 6] = 0;
+            #else
+                raw_hid_buffer[data_idx + 4] = g_openrgb_direct_mode_colors[led_idx].r;
+                raw_hid_buffer[data_idx + 5] = g_openrgb_direct_mode_colors[led_idx].g;
+                raw_hid_buffer[data_idx + 6] = g_openrgb_direct_mode_colors[led_idx].b;
+            #endif
         }
 
         uint8_t row   = 0;
@@ -291,10 +317,10 @@ void openrgb_get_led_info(uint8_t *data) {
         }
 
         if (col >= MATRIX_COLS || row >= MATRIX_ROWS) {
-            raw_hid_buffer[data_idx + 7] = KC_NO;
+            raw_hid_buffer[data_idx + 7] = 0; // KC_NO
         }
         else {
-            raw_hid_buffer[data_idx + 7] = pgm_read_byte(&keymaps[0][row][col]);
+            raw_hid_buffer[data_idx + 7] = keycode_at_keymap_location_raw(0,row,col);
         }
     }
 }
@@ -342,14 +368,17 @@ void openrgb_direct_mode_set_single_led(uint8_t *data) {
 
     raw_hid_buffer[0] = OPENRGB_DIRECT_MODE_SET_SINGLE_LED;
 
-    if (led >= DRIVER_LED_TOTAL || r > 255 || g > 255 || b > 255) {
+    if (led >= RGB_MATRIX_LED_COUNT || r > 255 || g > 255 || b > 255) {
         raw_hid_buffer[RAW_EPSIZE - 2] = OPENRGB_FAILURE;
         return;
     }
-
-    g_openrgb_direct_mode_colors[led].r = r;
-    g_openrgb_direct_mode_colors[led].g = g;
-    g_openrgb_direct_mode_colors[led].b = b;
+    #ifdef OPENRGB_DIRECT_MODE_UNBUFFERED
+        rgb_matrix_set_color(led, r, g, b);
+    #else
+        g_openrgb_direct_mode_colors[led].r = r;
+        g_openrgb_direct_mode_colors[led].g = g;
+        g_openrgb_direct_mode_colors[led].b = b;
+    #endif
 
     raw_hid_buffer[RAW_EPSIZE - 2] = OPENRGB_SUCCESS;
 }
@@ -357,11 +386,17 @@ void openrgb_direct_mode_set_leds(uint8_t *data) {
     const uint8_t number_leds = data[1];
 
     for (uint8_t i = 0; i < number_leds; i++) {
-        const uint8_t data_idx  = i * 4;
-        const uint8_t color_idx = data[data_idx + 2];
+        #ifdef OPENRGB_DIRECT_MODE_UNBUFFERED
+            uint8_t *p = data + i * 4 + 2;
+            rgb_matrix_set_color(p[0], p[1], p[2], p[3]);
+        #else
 
-        g_openrgb_direct_mode_colors[color_idx].r = data[data_idx + 3];
-        g_openrgb_direct_mode_colors[color_idx].g = data[data_idx + 4];
-        g_openrgb_direct_mode_colors[color_idx].b = data[data_idx + 5];
+            const uint8_t data_idx  = i * 4;
+            const uint8_t color_idx = data[data_idx + 2];
+
+            g_openrgb_direct_mode_colors[color_idx].r = data[data_idx + 3];
+            g_openrgb_direct_mode_colors[color_idx].g = data[data_idx + 4];
+            g_openrgb_direct_mode_colors[color_idx].b = data[data_idx + 5];
+        #endif
     }
 }
