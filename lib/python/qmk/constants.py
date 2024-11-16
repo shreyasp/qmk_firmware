@@ -320,5 +320,3 @@ LICENSE_TEXTS = [
         you may not use this file except in compliance with the License.
         """]),
 ]
-
-JOYSTICK_AXES = ['x', 'y', 'z', 'rx', 'ry', 'rz']

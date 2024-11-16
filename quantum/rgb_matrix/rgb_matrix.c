@@ -29,10 +29,6 @@
 
 #include <lib/lib8tion/lib8tion.h>
 
-#ifdef OPENRGB_ENABLE
-#    include "openrgb.h"
-#endif
-
 #ifndef RGB_MATRIX_CENTER
 const led_point_t k_rgb_matrix_center = {112, 32};
 #else
@@ -64,17 +60,6 @@ __attribute__((weak)) RGB rgb_matrix_hsv_to_rgb(HSV hsv) {
 // -----End rgb effect includes macros-------
 // ------------------------------------------
 
-#if !defined(RGB_MATRIX_DEFAULT_MODE)
-#    if defined(OPENRGB_ENABLE)
-#        define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_OPENRGB_DIRECT
-#    elif defined(ENABLE_RGB_MATRIX_CYCLE_LEFT_RIGHT)
-#        define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_CYCLE_LEFT_RIGHT
-#    else
-// fallback to solid colors if RGB_MATRIX_CYCLE_LEFT_RIGHT is disabled in userspace
-#        define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_SOLID_COLOR
-#    endif
-#endif
-
 // globals
 rgb_config_t rgb_matrix_config; // TODO: would like to prefix this with g_ for global consistancy, do this in another pr
 uint32_t     g_rgb_timer;
@@ -99,7 +84,7 @@ static last_hit_t last_hit_buffer;
 #endif // RGB_MATRIX_KEYREACTIVE_ENABLED
 
 // split rgb matrix
-#if defined(RGB_MATRIX_SPLIT)
+#if defined(RGB_MATRIX_ENABLE) && defined(RGB_MATRIX_SPLIT)
 const uint8_t k_rgb_matrix_split[2] = RGB_MATRIX_SPLIT;
 #endif
 
@@ -163,7 +148,7 @@ void rgb_matrix_set_color(int index, uint8_t red, uint8_t green, uint8_t blue) {
 }
 
 void rgb_matrix_set_color_all(uint8_t red, uint8_t green, uint8_t blue) {
-#if defined(RGB_MATRIX_SPLIT)
+#if defined(RGB_MATRIX_ENABLE) && defined(RGB_MATRIX_SPLIT)
     for (uint8_t i = 0; i < RGB_MATRIX_LED_COUNT; i++)
         rgb_matrix_set_color(i, red, green, blue);
 #else
@@ -171,7 +156,7 @@ void rgb_matrix_set_color_all(uint8_t red, uint8_t green, uint8_t blue) {
 #endif
 }
 
-void rgb_matrix_handle_key_event(uint8_t row, uint8_t col, bool pressed) {
+void process_rgb_matrix(uint8_t row, uint8_t col, bool pressed) {
 #ifndef RGB_MATRIX_SPLIT
     if (!is_keyboard_master()) return;
 #endif
