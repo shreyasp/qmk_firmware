@@ -13,7 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include "quantum.h"
 #include QMK_KEYBOARD_H
 
 /*
@@ -57,6 +57,19 @@ enum custom_layers {
     MACOS_BL,  // Mac OS Base Layer
     MACOS_FL   // Mac OS Function Layer
 };
+#ifdef VIA_OPENRGB_HYBRID
+enum ORGB_SWITCH{
+    ORGB = SAFE_RANGE,
+    };
+#endif
+
+#ifdef VIA_OPENRGB_HYBRID
+     bool is_orgb_mode = true; //Default value of the hybrid switch mode
+     #ifdef RGB_MATRIX_ENABLE
+     #    include "hybrid_switch_animation.h"
+     #endif
+#endif
+
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Windows Base Layer (Default Layer) */
@@ -71,7 +84,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* Windows Function Layer */
     [WIN_FL] = LAYOUT(
         KC_GRV,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,   KC_DEL,   _______,
-        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  KC_PSCR,  KC_SCRL,  KC_PAUS,  KC_INS,
+        _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  ORGB,  _______,  KC_PSCR,  KC_SCRL,  KC_PAUS,  KC_INS,
         _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,            _______,  KC_PGDN,
         _______,            RGB_SAD,  RGB_SAI,  RGB_SPD,  RGB_SPI,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_MPRV,  KC_MPLY,  KC_MNXT,  _______,  RGB_VAI,  KC_HOME,
         _______,  GU_TOGG,  _______,                                _______,                      _______,  _______,            RGB_RMOD, RGB_VAD,  RGB_MOD
@@ -114,3 +127,20 @@ bool dip_switch_update_user(uint8_t index, bool active) {
 }
 
 #endif
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record)
+{
+    switch (keycode) {
+        case ORGB:
+        #ifdef VIA_OPENRGB_HYBRID
+            if (record->event.pressed) {
+                is_orgb_mode = !is_orgb_mode;
+            #ifdef RGB_MATRIX_ENABLE
+                    switch_animation_start(is_orgb_mode);
+            #endif
+            }
+        #endif
+        default:
+            return true; // Process all other keycodes normally
+    }
+}
