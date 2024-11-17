@@ -48,6 +48,7 @@ enum ORGB_SWITCH{
     ORGB = SAFE_RANGE,
     };
 #endif
+
 #ifdef VIA_OPENRGB_HYBRID
      bool is_orgb_mode = true; //Default value of the hybrid switch mode
      #ifdef RGB_MATRIX_ENABLE
@@ -121,8 +122,7 @@ bool dip_switch_update_user(uint8_t index, bool active) {
 
 #endif
 
-bool
-process_record_user(uint16_t keycode, keyrecord_t *record)
+bool process_record_user(uint16_t keycode, keyrecord_t *record)
 {
     switch (keycode) {
         case ORGB:
