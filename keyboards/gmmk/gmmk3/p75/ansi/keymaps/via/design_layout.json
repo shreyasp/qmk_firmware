@@ -12,6 +12,9 @@
     "menus": [
       "qmk_rgb_matrix"
     ],
+    "customKeycodes": [
+        {"name": "VIA/OpenRGB Switch", "title": "Switch between VIA/OpenRGB", "shortName": "V/RGB"}
+      ],
     "layouts": {
       "keymap": [
         [
