@@ -65,17 +65,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT,  KC_Z,    KC_X,    KC_C,   KC_V,   KC_B,   KC_N,   KC_M,   KC_COMM, KC_DOT,  KC_SLSH,            KC_RSFT,  KC_UP,    KC_END,
         KC_LCTL,  KC_LWIN, KC_LALT,                         KC_SPC,                  KC_RALT, MO(_FL),         KC_LEFT,  KC_DOWN,  KC_RGHT
     ),
- 
+
     /* Function Layer */
     [_FL] = LAYOUT(
         _______, KC_MYCM, KC_WHOM, KC_CALC, KC_MSEL, KC_MPRV, KC_MNXT, KC_MPLY, KC_MSTP, KC_MUTE, KC_VOLD, KC_VOLU, KC_PSCR,           _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, ORGB, _______, _______, _______, _______,  _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,           _______, _______,
-        _______, RGB_SAD, RGB_SAI, RGB_SPD, RGB_SPI, _______, _______, _______, _______, _______, _______, _______,           RGB_VAI, _______,
-        _______, GU_TOGG, _______,                            _______,                   _______, _______,          RGB_RMOD, RGB_VAD, RGB_MOD
+        _______, RM_SATD, RM_SATU, RM_SPDD, RM_SPDU, _______, _______, _______, _______, _______, _______, _______,           RM_VALU, _______,
+        _______, GU_TOGG, _______,                            _______,                   _______, _______,          RM_PREV, RM_VALD, RM_NEXT
     ),
- 
+
     /* Custom Layer */
     [_CL] = LAYOUT(
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,           _______,
