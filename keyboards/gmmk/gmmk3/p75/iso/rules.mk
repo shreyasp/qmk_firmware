@@ -16,4 +16,3 @@ DIP_SWITCH_ENABLE = yes		# Enable DIP Switch on the back
 OPENRGB_ENABLE = yes
 VIA_ENABLE = yes
 VIA_OPENRGB_HYBRID = yes
-SRC += hybrid_switch_animation.c

@@ -16,6 +16,10 @@
 
 #include "quantum.h"
 
+#ifdef VIA_OPENRGB_HYBRID
+     uint8_t is_orgb_mode = true; //Default value of the hybrid switch mode
+#endif
+
 #ifdef RGB_MATRIX_ENABLE
 #define __ NO_LED
 

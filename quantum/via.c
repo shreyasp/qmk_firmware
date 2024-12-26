@@ -281,9 +281,9 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     if (is_orgb_mode) {
 #ifdef OPENRGB_ENABLE
         orgb_raw_hid_receive(data, length);
-#endif
+#endif      
         return;
-    }
+    }        
 #endif
     uint8_t *command_id   = &(data[0]);
     uint8_t *command_data = &(data[1]);

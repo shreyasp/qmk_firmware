@@ -16,6 +16,10 @@
 
 #include "quantum.h"
 
+#ifdef VIA_OPENRGB_HYBRID
+     uint8_t is_orgb_mode = true; //Default value of the hybrid switch mode
+#endif
+
 #ifdef RGB_MATRIX_ENABLE
 #define __ NO_LED
 
@@ -139,7 +143,7 @@ const aw20216s_led_t PROGMEM g_aw20216s_leds[AW20216S_LED_COUNT] = {
 };
 
 led_config_t g_led_config = {
-    {   
+    {
         { 57, 58, __, 78, __, 80, 72, 5},
         { 29, 28, 44, 0,  59, 42, 13, 14},
         { 30, 43, 45, __, 60, 56, 1,  15},
@@ -166,7 +170,7 @@ led_config_t g_led_config = {
         {0, 15},  {0, 20},  {0, 25},  {0, 30},  {0, 35},  {0, 40},  {0, 45},  {0, 50},  {0, 55},  {0, 60},
         {224, 15},  {224, 20},  {224, 25},  {224, 30},  {224, 35},  {224, 40},  {224, 45},  {224, 50},  {224, 55},  {224, 60},
         // logo
-        {207, 0},        
+        {207, 0},
     },
     {
         // Keyboard RGB Matrix

@@ -16,6 +16,10 @@
 
 #include "quantum.h"
 
+#ifdef VIA_OPENRGB_HYBRID
+     uint8_t is_orgb_mode = true; //Default value of the hybrid switch mode
+#endif
+
 #ifdef RGB_MATRIX_ENABLE
 #define __ NO_LED
 
@@ -55,7 +59,7 @@ const aw20216s_led_t PROGMEM g_aw20216s_leds[AW20216S_LED_COUNT] = {
     {0, SW12_CS7, SW12_CS8, SW12_CS9},     // 25 [
     {1, SW8_CS1, SW8_CS2, SW8_CS3},        // 26 ]
     {1, SW9_CS1, SW9_CS2, SW9_CS3},        // 27 (#)
-    
+
     {0, SW1_CS10, SW1_CS11, SW1_CS12},     // 28 CAPS
     {0, SW2_CS10, SW2_CS11, SW2_CS12},     // 29 A
     {0, SW3_CS10, SW3_CS11, SW3_CS12},     // 30 S
