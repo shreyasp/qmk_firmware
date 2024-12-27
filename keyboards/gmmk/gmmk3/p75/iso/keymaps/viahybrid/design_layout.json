@@ -1,5 +1,5 @@
 {
-    "name": "GMMK3 100% ANSI",
+    "name": "GMMK3 75% ISO",
     "vendorId": "0x504B",
     "productId": "0x320F",
     "matrix": {
@@ -13,7 +13,6 @@
       "qmk_rgb_matrix"
     ],
     "customKeycodes": [
-        {"name": "VIA/OpenRGB Switch", "title": "Switch between VIA/OpenRGB", "shortName": "V/RGB"}
       ],
     "layouts": {
       "keymap": [
@@ -101,9 +100,15 @@
           "8,1",
           "6,1",
           {
-            "w": 1.5
+            "c": "#777777",
+            "x": 0.25,
+            "w": 1.25,
+            "h": 2,
+            "w2": 1.5,
+            "h2": 1,
+            "x2": -0.25
           },
-          "10,2",
+          "10,4",
           {
             "c": "#cccccc"
           },
@@ -129,25 +134,23 @@
           "7,2",
           "8,2",
           "8,3",
+          "10,2",
           {
-            "c": "#777777",
-            "w": 2.25
-          },
-          "10,4",
-          {
-            "c": "#cccccc"
+            "c": "#cccccc",
+            "x": 1.25
           },
           "2,5"
         ],
         [
           {
             "c": "#aaaaaa",
-            "w": 2.25
+            "w": 1.25
           },
           "0,0",
           {
             "c": "#cccccc"
           },
+          "0,1",
           "1,4",
           "2,4",
           "3,4",
