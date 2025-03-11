@@ -30,7 +30,7 @@
  *   |     |          |          B location
  *   |     |          |          | */
 const aw20216s_led_t PROGMEM g_aw20216s_leds[AW20216S_LED_COUNT] = {
-    {0, SW1_CS1, SW1_CS2, SW1_CS3},        // 0 ESC
+    {0, SW1_CS4, SW1_CS5, SW1_CS6},        // 0 ESC
     {0, SW2_CS4, SW2_CS5, SW2_CS6},        // 1 1
     {0, SW3_CS4, SW3_CS5, SW3_CS6},        // 2 2
     {0, SW4_CS4, SW4_CS5, SW4_CS6},        // 3 3
