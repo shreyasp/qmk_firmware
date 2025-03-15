@@ -121,6 +121,7 @@ const aw20216s_led_t PROGMEM g_aw20216s_leds[AW20216S_LED_COUNT] = {
     {1, SW8_CS16, SW8_CS17, SW8_CS18},     // 82 SLED18
     {1, SW9_CS16, SW9_CS17, SW9_CS18},     // 83 SLED19
     {1, SW10_CS16, SW10_CS17, SW10_CS18},  // 84 SLED20
+    {1, SW10_CS1, SW10_CS2, SW10_CS3},     // 85 BADGE
 };
 
 led_config_t g_led_config = {
@@ -149,6 +150,8 @@ led_config_t g_led_config = {
         // Left and right side lights
         {0, 15},  {0, 20},  {0, 25},  {0, 30},  {0, 35},  {0, 40},  {0, 45},  {0, 50},  {0, 55},  {0, 60},
         {224, 15},  {224, 20},  {224, 25},  {224, 30},  {224, 35},  {224, 40},  {224, 45},  {224, 50},  {224, 55},  {224, 60},
+        // BADGE
+        {214, 0},
     },
     {
         // Keyboard RGB Matrix
@@ -160,6 +163,8 @@ led_config_t g_led_config = {
         // Left and right side lights
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
         2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        //BADGE
+        8,
     }
 };
 #endif // RGB_MATRIX_ENABLE
