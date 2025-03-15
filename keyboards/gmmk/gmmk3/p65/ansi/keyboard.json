@@ -80,7 +80,7 @@
                 {"label": ";",   "matrix": [8, 2], "x": 10.75, "y": 2},
                 {"label": "'",   "matrix": [8, 3], "x": 11.75, "y": 2},
                 {"label": "Enter", "matrix": [10, 4], "x": 12.75, "y": 2, "w": 2.25},
-                {"label": "PgD", "matrix": [2, 5], "x": 15, "y": 2},
+                {"label": "PgUp", "matrix": [1, 5], "x": 15, "y": 2},
 
                 {"label": "LShft", "matrix": [0, 0], "x": 0, "y": 3, "w": 2.25},
                 {"label": "Z",   "matrix": [1, 4], "x": 2.25, "y": 3},
@@ -95,7 +95,7 @@
                 {"label": "/",   "matrix": [8, 5], "x": 11.25, "y": 3},
                 {"label": "RShft", "matrix": [9, 1], "x": 12.25, "y": 3, "w": 1.75},
                 {"label": "Up",  "matrix": [3, 5], "x": 14, "y": 3},
-                {"label": "End", "matrix": [12, 6], "x": 15, "y": 3},
+                {"label": "PgDn", "matrix": [2, 5], "x": 15, "y": 3},
 
                 {"label": "LCtr", "matrix": [0, 6], "x": 0, "y": 4, "w": 1.25},
                 {"label": "LWin", "matrix": [9, 0], "x": 1.25, "y": 4, "w": 1.25},

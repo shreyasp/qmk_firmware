@@ -73,7 +73,7 @@ const aw20216s_led_t PROGMEM g_aw20216s_leds[AW20216S_LED_COUNT] = {
     {0, SW11_CS10, SW11_CS11, SW11_CS12},  // 38 ;
     {0, SW12_CS10, SW12_CS11, SW12_CS12},  // 39 '
     {1, SW11_CS1, SW11_CS2, SW11_CS3},     // 40 ENTER
-    {1, SW7_CS4, SW7_CS5, SW7_CS6},        // 41 PGDN
+    {1, SW7_CS4, SW7_CS5, SW7_CS6},        // 41 PGUP
 
     {0, SW1_CS13, SW1_CS14, SW1_CS15},     // 42 L_SHIFT
     {0, SW2_CS13, SW2_CS14, SW2_CS15},     // 43 Z
@@ -88,7 +88,7 @@ const aw20216s_led_t PROGMEM g_aw20216s_leds[AW20216S_LED_COUNT] = {
     {0, SW11_CS13, SW11_CS14, SW11_CS15},  // 52 /
     {1, SW8_CS4, SW8_CS5, SW8_CS6},        // 53 R_SHIFT
     {1, SW9_CS4, SW9_CS5, SW9_CS6},        // 54 UP
-    {1, SW2_CS1, SW2_CS2, SW2_CS3},        // 55 End
+    {1, SW2_CS1, SW2_CS2, SW2_CS3},        // 55 PGDN
 
     {0, SW1_CS16, SW1_CS17, SW1_CS18},     // 56 L_CTRL
     {0, SW2_CS16, SW2_CS17, SW2_CS18},     // 57 L_WIN
@@ -129,7 +129,7 @@ led_config_t g_led_config = {
         { 42, __, __, 62, __, 64, 56, __},
         { 15, 14, 29, 0,  43, __, __, 1 },
         { 16, 28, 30, __, 44, 41, __, 2 },
-        { 17, __, 31, __, 45, 54, __, 3 },
+        { 17, __, 31, __, 45, 55, __, 3 },
         { 18, 19, 32, 33, 46, 47, 5,  4 },
         { 21, 20, 35, 34, 49, 48, 6,  7 },
         { 22, 26, 36, __, 50, __, 12, 8 },
